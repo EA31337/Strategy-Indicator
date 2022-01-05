@@ -23,8 +23,10 @@ INPUT float Indicator_OrderCloseLoss = 80;        // Order close loss
 INPUT float Indicator_OrderCloseProfit = 80;      // Order close profit
 INPUT int Indicator_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("Indicator strategy: Indicator indicator params");
-INPUT ENUM_INDICATOR_TYPE Indicator_Indi_Indicator_Type = INDI_CCI;                // Indicator type
+INPUT ENUM_INDICATOR_TYPE Indicator_Indi_Indicator_Type = INDI_WPR;                // Indicator type
 INPUT int Indicator_Indi_Indicator_Mode = 0;                                       // Mode to use
+INPUT string Indicator_Indi_Indicator_Path = INDI_CUSTOM_PATH;                     // Custom only: Path
+INPUT string Indicator_Indi_Indicator_Params = "[12]";                             // Custom only: Params
 INPUT int Indicator_Indi_Indicator_Shift = 0;                                      // Shift
 INPUT ENUM_IDATA_SOURCE_TYPE Indicator_Indi_Indicator_SourceType = IDATA_BUILTIN;  // Source type
 
@@ -66,6 +68,7 @@ class Stg_Indicator : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
+    int _ishift = ::Indicator_Indi_Indicator_Shift;
     ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
     IndicatorBase *_indi = NULL;
     // IndicatorParams _params;
@@ -147,8 +150,16 @@ class Stg_Indicator : public Strategy {
         _indi = new Indi_ColorLine(_tf);
         break;
       case INDI_CUSTOM:  // Custom indicator
-        // @todo
-        break;
+      {
+        IndiCustomParams _iparams_custom(::Indicator_Indi_Indicator_Path, _ishift);
+        Matrix<double> _iparams_args = Indicator_Indi_Indicator_Params;
+        _iparams_custom.SetTf(_tf);
+        for (int _ipa = 0; _ipa < _iparams_args.GetSize(); _ipa++) {
+          DataParamEntry _iparam_entry = _iparams_args[_ipa].Val();
+          _iparams_custom.AddParam(_iparam_entry);
+        }
+        _indi = new Indi_Custom(_iparams_custom);
+      } break;
       case INDI_CUSTOM_MOVING_AVG:  // Custom Moving Average
         _indi = new Indi_CustomMovingAverage(_tf);
         break;
