@@ -29,6 +29,7 @@ INPUT string Indicator_Indi_Indicator_Path = INDI_CUSTOM_PATH;                  
 INPUT string Indicator_Indi_Indicator_Params = "[12]";                             // Custom only: Params
 INPUT int Indicator_Indi_Indicator_Shift = 0;                                      // Shift
 INPUT ENUM_IDATA_SOURCE_TYPE Indicator_Indi_Indicator_SourceType = IDATA_BUILTIN;  // Source type
+INPUT ENUM_EA_DATA_EXPORT_METHOD Indicator_Indi_Indicator_DataExportMethod = EA_DATA_EXPORT_NONE;  // Export method
 
 // Structs.
 
@@ -351,7 +352,7 @@ class Stg_Indicator : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method, float _level = 0.0f, int _shift = 0) {
-    IndicatorBase *_indi = GetIndicator(Indicator_Indi_Indicator_Type);
+    IndicatorBase *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
     bool _result = true;
     if (!_result) {
       // Returns false when indicator data is not valid.
@@ -371,5 +372,59 @@ class Stg_Indicator : public Strategy {
         break;
     }
     return _result;
+  }
+
+  /**
+   * Executes on new time periods.
+   */
+  void OnPeriod(unsigned int _periods = DATETIME_NONE) {
+    if ((_periods & DATETIME_MINUTE) != 0) {
+      // New minute started.
+    }
+    if ((_periods & DATETIME_HOUR) != 0) {
+      // New hour started.
+    }
+    if ((_periods & DATETIME_DAY) != 0) {
+      // New day started.
+      ENUM_EA_DATA_EXPORT_METHOD _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
+      if (_export_method != EA_DATA_EXPORT_NONE) {
+        ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
+        IndicatorBase *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
+        if (_indi.GetData().Size() > 0) {
+          // Perform an export of data.
+          int _serializer_flags = SERIALIZER_FLAG_SKIP_HIDDEN | SERIALIZER_FLAG_INCLUDE_DEFAULT |
+                                  SERIALIZER_FLAG_INCLUDE_DYNAMIC | SERIALIZER_FLAG_REUSE_STUB |
+                                  SERIALIZER_FLAG_REUSE_OBJECT;
+          string _indi_key =
+              StringFormat("%s-%d-%d-%d", __FILE__, _tf, _indi.GetData().GetMin(), _indi.GetData().GetMax());
+          SerializerConverter _stub = Serializer::MakeStubObject<BufferStruct<IndicatorDataEntry>>(_serializer_flags);
+          SerializerConverter _obj = SerializerConverter::FromObject(_indi, _serializer_flags);
+          if (_export_method == EA_DATA_EXPORT_CSV || _export_method == EA_DATA_EXPORT_ALL) {
+            _obj.ToFile<SerializerCsv>(_indi_key + ".csv", _serializer_flags, &_stub);
+          }
+          if (_export_method == EA_DATA_EXPORT_DB || _export_method == EA_DATA_EXPORT_ALL) {
+            SerializerSqlite::ConvertToFile(_obj, _indi_key + ".sqlite", "idata", _serializer_flags, &_stub);
+          }
+          if (_export_method == EA_DATA_EXPORT_JSON || _export_method == EA_DATA_EXPORT_ALL) {
+            _obj.ToFile<SerializerJson>(_indi_key + ".json", _serializer_flags, &_stub);
+          }
+          // Required for SERIALIZER_FLAG_REUSE_STUB flag.
+          _stub.Clean();
+          // Required for SERIALIZER_FLAG_REUSE_OBJECT flag.
+          _obj.Clean();
+          // Clear cache after export.
+          _indi.ExecuteAction(INDI_ACTION_CLEAR_CACHE);
+        }
+      }
+    }
+    if ((_periods & DATETIME_WEEK) != 0) {
+      // New week started.
+    }
+    if ((_periods & DATETIME_MONTH) != 0) {
+      // New month started.
+    }
+    if ((_periods & DATETIME_YEAR) != 0) {
+      // New year started.
+    }
   }
 };
