@@ -398,7 +398,7 @@ class Stg_Indicator : public Strategy {
           string _indi_key =
               StringFormat("%s-%d-%d-%d", __FILE__, _tf, _indi.GetData().GetMin(), _indi.GetData().GetMax());
           SerializerConverter _stub = Serializer::MakeStubObject<BufferStruct<IndicatorDataEntry>>(_serializer_flags);
-          SerializerConverter _obj = SerializerConverter::FromObject(_indi, _serializer_flags);
+          SerializerConverter _obj = SerializerConverter::FromObject(_indi.GetData(), _serializer_flags);
           if (_export_method == EA_DATA_EXPORT_CSV || _export_method == EA_DATA_EXPORT_ALL) {
             _obj.ToFile<SerializerCsv>(_indi_key + ".csv", _serializer_flags, &_stub);
           }
