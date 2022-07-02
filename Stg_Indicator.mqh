@@ -352,7 +352,7 @@ class Stg_Indicator : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method, float _level = 0.0f, int _shift = 0) {
-    IndicatorBase *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
+    IndicatorData *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
     bool _result = true;
     if (!_result) {
       // Returns false when indicator data is not valid.
@@ -389,7 +389,7 @@ class Stg_Indicator : public Strategy {
       ENUM_EA_DATA_EXPORT_METHOD _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
       if (_export_method != EA_DATA_EXPORT_NONE) {
         ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
-        IndicatorBase *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
+        IndicatorData *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
         if (_indi.GetData().Size() > 0) {
           // Perform an export of data.
           int _serializer_flags = SERIALIZER_FLAG_SKIP_HIDDEN | SERIALIZER_FLAG_INCLUDE_DEFAULT |
@@ -397,7 +397,8 @@ class Stg_Indicator : public Strategy {
                                   SERIALIZER_FLAG_REUSE_OBJECT;
           string _indi_key =
               StringFormat("%s-%d-%d-%d", __FILE__, _tf, _indi.GetData().GetMin(), _indi.GetData().GetMax());
-          SerializerConverter _stub = Serializer::MakeStubObject<BufferStruct<IndicatorDataEntry>>(_serializer_flags);
+          SerializerConverter _stub =
+              SerializerConverter::MakeStubObject<BufferStruct<IndicatorDataEntry>>(_serializer_flags);
           SerializerConverter _obj = SerializerConverter::FromObject(_indi.GetData(), _serializer_flags);
           if (_export_method == EA_DATA_EXPORT_CSV || _export_method == EA_DATA_EXPORT_ALL) {
             _obj.ToFile<SerializerCsv>(_indi_key + ".csv", _serializer_flags, &_stub);
@@ -413,7 +414,7 @@ class Stg_Indicator : public Strategy {
           // Required for SERIALIZER_FLAG_REUSE_OBJECT flag.
           _obj.Clean();
           // Clear cache after export.
-          _indi.ExecuteAction(INDI_ACTION_CLEAR_CACHE);
+          // _indi.ExecuteAction(INDI_ACTION_CLEAR_CACHE);
         }
       }
     }
