@@ -153,14 +153,17 @@ class Stg_Indicator : public Strategy {
       case INDI_CUSTOM:  // Custom indicator
       {
         IndiCustomParams _iparams_custom(::Indicator_Indi_Indicator_Path, _ishift);
-        Matrix<double> _iparams_args = Indicator_Indi_Indicator_Params;
         _iparams_custom.SetTf(_tf);
-        for (int _ipa = 0; _ipa < _iparams_args.GetSize(); _ipa++) {
-          DataParamEntry _iparam_entry = _iparams_args[_ipa].Val();
-          _iparams_custom.AddParam(_iparam_entry);
+        if (StringLen(Indicator_Indi_Indicator_Params) > 2) {
+          Matrix<double> _iparams_args = Indicator_Indi_Indicator_Params;
+          for (int _ipa = 0; _ipa < _iparams_args.GetSize(); _ipa++) {
+            DataParamEntry _iparam_entry = _iparams_args[_ipa].Val();
+            _iparams_custom.AddParam(_iparam_entry);
+          }
         }
         _indi = new Indi_Custom(_iparams_custom);
-      } break;
+        break;
+      }
       case INDI_CUSTOM_MOVING_AVG:  // Custom Moving Average
         _indi = new Indi_CustomMovingAverage(_tf);
         break;
