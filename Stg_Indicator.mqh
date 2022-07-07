@@ -30,6 +30,7 @@ INPUT string Indicator_Indi_Indicator_Params = "[12]";                          
 INPUT int Indicator_Indi_Indicator_Shift = 0;                                      // Shift
 INPUT ENUM_IDATA_SOURCE_TYPE Indicator_Indi_Indicator_SourceType = IDATA_BUILTIN;  // Source type
 INPUT ENUM_EA_DATA_EXPORT_METHOD Indicator_Indi_Indicator_DataExportMethod = EA_DATA_EXPORT_NONE;  // Export method
+INPUT int Indicator_Indi_Indicator_DataExportModes = 1;                                            // Export modes (max)
 
 // Structs.
 
@@ -71,7 +72,7 @@ class Stg_Indicator : public Strategy {
   void OnInit() {
     int _ishift = ::Indicator_Indi_Indicator_Shift;
     ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
-    IndicatorBase *_indi = NULL;
+    IndicatorData *_indi = NULL;
     // IndicatorParams _params;
     switch (Indicator_Indi_Indicator_Type) {
       case INDI_NONE:  // (None)
@@ -162,6 +163,8 @@ class Stg_Indicator : public Strategy {
           }
         }
         _indi = new Indi_Custom(_iparams_custom);
+        _indi.Set<int>(STRUCT_ENUM(IndicatorDataParams, IDATA_PARAM_MAX_MODES),
+                       ::Indicator_Indi_Indicator_DataExportModes);
         break;
       }
       case INDI_CUSTOM_MOVING_AVG:  // Custom Moving Average
