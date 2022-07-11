@@ -396,15 +396,18 @@ class Stg_Indicator : public Strategy {
       if (_export_method != EA_DATA_EXPORT_NONE) {
         ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
         IndicatorData *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
-        if (_indi.GetData().Size() > 0) {
+        if (_indi.GetData().Size() != 0) {
           // Perform an export of data.
           int _serializer_flags = SERIALIZER_FLAG_SKIP_HIDDEN | SERIALIZER_FLAG_INCLUDE_DEFAULT |
                                   SERIALIZER_FLAG_INCLUDE_DYNAMIC | SERIALIZER_FLAG_REUSE_STUB |
                                   SERIALIZER_FLAG_REUSE_OBJECT;
           string _indi_key =
               StringFormat("%s-%d-%d-%d", __FILE__, _tf, _indi.GetData().GetMin(), _indi.GetData().GetMax());
-          SerializerConverter _stub =
-              SerializerConverter::MakeStubObject<BufferStruct<IndicatorDataEntry>>(_serializer_flags);
+          // How many values are in each entry.
+          int _num_values_in_entry =
+              _indi.GetData().Size() == 0 ? 0 : _indi.GetData().GetByKey(_indi.GetData().GetMin()).GetSize();
+          SerializerConverter _stub = SerializerConverter::MakeStubObject<BufferStruct<IndicatorDataEntry>>(
+              _serializer_flags, /* Single entry */ 1, _num_values_in_entry);
           SerializerConverter _obj = SerializerConverter::FromObject(_indi.GetData(), _serializer_flags);
           if (_export_method == EA_DATA_EXPORT_CSV || _export_method == EA_DATA_EXPORT_ALL) {
             _obj.ToFile<SerializerCsv>(_indi_key + ".csv", _serializer_flags, &_stub);
