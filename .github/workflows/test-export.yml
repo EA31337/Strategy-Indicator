@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: Include/EA31337-classes
-          ref: 6c679d14c02db2fa2fcc01c3e3aad41c8cbea674
+          ref: 56c61037becbdc3b10c7c3f88e71201a71aa68dd
           repository: EA31337/EA31337-classes
       - name: Compile for MQL4
         uses: fx31337/mql-compile-action@master
@@ -72,10 +72,14 @@ jobs:
       - uses: finnp/create-file-action@master
         env:
           FILE_NAME: Stg_Indicator.set
-          FILE_DATA: ${{ matrix.ea-param }}
+          FILE_DATA: |
+            ${{ matrix.ea-param }}
+            Indicator_MaxSpread=0.1
+            Log_Level=1
       - name: Run strategy
         uses: ea31337/mql-tester-action@dev
         with:
+          BtDays: 1-12
           BtDeposit: 100000
           BtDest: ${{ github.workspace }}/_results
           BtMonths: ${{ matrix.month }}
