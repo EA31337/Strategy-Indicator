@@ -61,7 +61,7 @@ class Stg_Indicator : public Strategy {
     // Initialize indicator.
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
-    TradeParams _tparams;
+    TradeParams _tparams(::Indicator_LotSize, 1.0f, 50);
     Strategy *_strat = new Stg_Indicator(_stg_params, _tparams, _cparams, "Indicator");
     return _strat;
   }
