@@ -70,6 +70,7 @@ class Stg_Indicator : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
+    Strategy::OnInit();
     int _ishift = ::Indicator_Indi_Indicator_Shift;
     ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
     IndicatorData *_indi = NULL;
