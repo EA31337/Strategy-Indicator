@@ -54,3 +54,4 @@ jobs:
         with:
           name: EA
           path: '*.ex?'
+    timeout-minutes: 10
