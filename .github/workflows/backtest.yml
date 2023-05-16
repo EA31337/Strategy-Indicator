@@ -23,8 +23,8 @@ jobs:
         shell: powershell
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           path: Include/EA31337-classes
           ref: 6c679d14c02db2fa2fcc01c3e3aad41c8cbea674
