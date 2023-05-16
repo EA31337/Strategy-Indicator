@@ -388,9 +388,9 @@ class Stg_Indicator : public Strategy {
     if ((_periods & DATETIME_MINUTE) != 0) {
       // New minute started.
       if (::Indicator_Indi_Indicator_DataExportMethod != EA_DATA_EXPORT_NONE) {
-        //IndicatorData *_indi_ = GetIndicator(::Indicator_Indi_Indicator_Type);
-        // Read each indicator data entry in export mode.
-        //IndicatorDataEntry _indi_entry(_indi_[::Indicator_Indi_Indicator_Shift]);
+        // IndicatorData *_indi_ = GetIndicator(::Indicator_Indi_Indicator_Type);
+        //  Read each indicator data entry in export mode.
+        // IndicatorDataEntry _indi_entry(_indi_[::Indicator_Indi_Indicator_Shift]);
       }
     }
     if ((_periods & DATETIME_HOUR) != 0) {
