@@ -23,7 +23,7 @@ INPUT float Indicator_OrderCloseLoss = 80;        // Order close loss
 INPUT float Indicator_OrderCloseProfit = 80;      // Order close profit
 INPUT int Indicator_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("Indicator strategy: Indicator indicator params");
-INPUT ENUM_INDICATOR_TYPE Indicator_Indi_Indicator_Type = INDI_WPR;                // Indicator type
+INPUT ENUM_INDICATOR_TYPE Indicator_Indi_Indicator_Type = INDI_CANDLE;             // Indicator type
 INPUT int Indicator_Indi_Indicator_Mode = 0;                                       // Mode to use
 INPUT string Indicator_Indi_Indicator_Path = INDI_CUSTOM_PATH;                     // Custom only: Path
 INPUT string Indicator_Indi_Indicator_Params = "[12]";                             // Custom only: Params
