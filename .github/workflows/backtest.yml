@@ -52,7 +52,7 @@ jobs:
         with:
           name: EA
           path: '*.ex?'
-    timeout-minutes: 60
+    timeout-minutes: 10
   Test:
     needs: Compile
     runs-on: ubuntu-latest
@@ -82,4 +82,4 @@ jobs:
         with:
           name: results
           path: ${{ github.workspace }}/_results/*.*
-    timeout-minutes: 60
+    timeout-minutes: 10
