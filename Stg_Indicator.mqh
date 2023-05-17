@@ -6,14 +6,14 @@
 // User input params.
 INPUT_GROUP("Indicator strategy: strategy params");
 INPUT float Indicator_LotSize = 0;                // Lot size
-INPUT int Indicator_SignalOpenMethod = 0;         // Signal open method
-INPUT float Indicator_SignalOpenLevel = 0;        // Signal open level
+INPUT int Indicator_SignalOpenMethod = 68;        // Signal open method
+INPUT float Indicator_SignalOpenLevel = 20;       // Signal open level
 INPUT int Indicator_SignalOpenFilterMethod = 32;  // Signal open filter method
 INPUT int Indicator_SignalOpenFilterTime = 3;     // Signal open filter time (0-31)
 INPUT int Indicator_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int Indicator_SignalCloseMethod = 0;        // Signal close method
 INPUT int Indicator_SignalCloseFilter = 32;       // Signal close filter (-127-127)
-INPUT float Indicator_SignalCloseLevel = 0;       // Signal close level
+INPUT float Indicator_SignalCloseLevel = 20;      // Signal close level
 INPUT int Indicator_PriceStopMethod = 0;          // Price limit method
 INPUT float Indicator_PriceStopLevel = 2;         // Price limit level
 INPUT int Indicator_TickFilterMethod = 32;        // Tick filter method (0-255)
@@ -23,7 +23,7 @@ INPUT float Indicator_OrderCloseLoss = 80;        // Order close loss
 INPUT float Indicator_OrderCloseProfit = 80;      // Order close profit
 INPUT int Indicator_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("Indicator strategy: Indicator indicator params");
-INPUT ENUM_INDICATOR_TYPE Indicator_Indi_Indicator_Type = INDI_ASI;                // Indicator type
+INPUT ENUM_INDICATOR_TYPE Indicator_Indi_Indicator_Type = INDI_CHAIKIN;            // Indicator type
 INPUT int Indicator_Indi_Indicator_Mode = 0;                                       // Mode to use
 INPUT string Indicator_Indi_Indicator_Path = INDI_CUSTOM_PATH;                     // Custom only: Path
 INPUT string Indicator_Indi_Indicator_Params = "[12]";                             // Custom only: Params
