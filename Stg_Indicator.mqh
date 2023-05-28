@@ -53,7 +53,7 @@ class Stg_Indicator : public Strategy {
   Stg_Indicator(StgParams &_sparams, TradeParams &_tparams, ChartParams &_cparams, string _name = "")
       : Strategy(_sparams, _tparams, _cparams, _name) {}
 
-  static Stg_Indicator *Init(ENUM_TIMEFRAMES _tf = NULL) {
+  static Stg_Indicator *Init(ENUM_TIMEFRAMES _tf = NULL, EA* _ea = NULL) {
     // Initialize strategy initial values.
     Stg_Indicator_Params_Defaults stg_indi_defaults;
     StgParams _stg_params(stg_indi_defaults);
