@@ -385,13 +385,8 @@ class Stg_Indicator : public Strategy {
       // New minute started.
       ENUM_EA_DATA_EXPORT_METHOD _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
       if (_export_method != EA_DATA_EXPORT_NONE) {
-        /* @todo
         IndicatorBase *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
-        int _max_modes = _indi.GetParams().GetMaxModes();
-        for (int i = 0; i < _max_modes; i++) {
-          _indi.Get(i, GetShift());
-        }
-        */
+        _indi.GetEntry();
       }
     }
     if ((_periods & DATETIME_HOUR) != 0) {
