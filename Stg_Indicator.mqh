@@ -53,7 +53,7 @@ class Stg_Indicator : public Strategy {
   Stg_Indicator(StgParams &_sparams, TradeParams &_tparams, ChartParams &_cparams, string _name = "")
       : Strategy(_sparams, _tparams, _cparams, _name) {}
 
-  static Stg_Indicator *Init(ENUM_TIMEFRAMES _tf = NULL, EA* _ea = NULL) {
+  static Stg_Indicator *Init(ENUM_TIMEFRAMES _tf = NULL, EA *_ea = NULL) {
     // Initialize strategy initial values.
     Stg_Indicator_Params_Defaults stg_indi_defaults;
     StgParams _stg_params(stg_indi_defaults);
@@ -383,6 +383,16 @@ class Stg_Indicator : public Strategy {
   void OnPeriod(unsigned int _periods = DATETIME_NONE) {
     if ((_periods & DATETIME_MINUTE) != 0) {
       // New minute started.
+      ENUM_EA_DATA_EXPORT_METHOD _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
+      if (_export_method != EA_DATA_EXPORT_NONE) {
+        /* @todo
+        IndicatorBase *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
+        int _max_modes = _indi.GetParams().GetMaxModes();
+        for (int i = 0; i < _max_modes; i++) {
+          _indi.Get(i, GetShift());
+        }
+        */
+      }
     }
     if ((_periods & DATETIME_HOUR) != 0) {
       // New hour started.
