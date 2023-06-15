@@ -381,11 +381,13 @@ class Stg_Indicator : public Strategy {
    * Executes on new time periods.
    */
   void OnPeriod(unsigned int _periods = DATETIME_NONE) {
+    ENUM_EA_DATA_EXPORT_METHOD _export_method;
+    IndicatorData *_indi;
     if ((_periods & DATETIME_MINUTE) != 0) {
       // New minute started.
-      ENUM_EA_DATA_EXPORT_METHOD _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
+      _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
       if (_export_method != EA_DATA_EXPORT_NONE) {
-        IndicatorData *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
+        _indi = GetIndicator(::Indicator_Indi_Indicator_Type);
         _indi.GetEntry();
       }
     }
@@ -394,10 +396,10 @@ class Stg_Indicator : public Strategy {
     }
     if ((_periods & DATETIME_DAY) != 0) {
       // New day started.
-      ENUM_EA_DATA_EXPORT_METHOD _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
+      _export_method = ::Indicator_Indi_Indicator_DataExportMethod;
       if (_export_method != EA_DATA_EXPORT_NONE) {
         ENUM_TIMEFRAMES _tf = Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF);
-        IndicatorData *_indi = GetIndicator(::Indicator_Indi_Indicator_Type);
+        _indi = GetIndicator(::Indicator_Indi_Indicator_Type);
         if (_indi.GetData().Size() > 0) {
           // Perform an export of data.
           int _serializer_flags = SERIALIZER_FLAG_SKIP_HIDDEN | SERIALIZER_FLAG_INCLUDE_DEFAULT |
