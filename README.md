@@ -20,6 +20,7 @@ For example you can choose RSI and choose its signal levels.
 | v1.010   | v2.010    |
 | v1.011   | v2.011.1  |
 | v1.012   | v2.012.1  |
+| v1.013   | v2.013    |
 
 <!-- Named links -->
 
